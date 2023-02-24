@@ -1,0 +1,33 @@
+package com.example.ECommerce_BackEnd.model;
+
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "sellerdata")
+public class sellerLogin {
+
+    @Id
+    @Column(name ="SELLER_USERNAME")
+    private String seller_username;
+
+    @Column(name ="SELLER_PASSWORD")
+    private String seller_password;
+
+    @Column(name="SELLER_ACCOUNTDETAILS")
+    private String seller_accountdetails;
+
+    @Column(name="SELLER_EMAIL")
+    private String seller_email;
+
+    @Column(name="SELLER_ADDRESS")
+    private String seller_address;
+
+    @Column(name="SELLER_PHONENUMBER")
+    private String seller_phonenumber;
+}
