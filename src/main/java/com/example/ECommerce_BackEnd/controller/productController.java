@@ -2,7 +2,6 @@ package com.example.ECommerce_BackEnd.controller;
 
 import com.example.ECommerce_BackEnd.model.imageModel;
 import com.example.ECommerce_BackEnd.model.product;
-import com.example.ECommerce_BackEnd.service.productService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @CrossOrigin(origins= {"*"}, maxAge = 4800, allowCredentials = "false")
@@ -54,6 +54,11 @@ public class productController {
     @GetMapping({"/getAllProducts"})
     public List<product> getAllProducts(){
         return productService.getAllProducts();
+    }
+
+    @GetMapping("/getProduct")
+    public List<product> getProduct(@RequestParam(value = "id_product") Long productId){
+        return productService.getProduct(productId);
     }
 
 

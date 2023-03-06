@@ -22,6 +22,7 @@ public class product {
 
     private String product_owner;
 
+    //Need to change to int
     private String product_quantity;
 
     private String product_category;
