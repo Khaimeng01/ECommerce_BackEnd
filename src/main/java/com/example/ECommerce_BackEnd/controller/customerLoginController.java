@@ -2,6 +2,7 @@ package com.example.ECommerce_BackEnd.controller;
 
 import com.example.ECommerce_BackEnd.execption.ResourceNotFoundException;
 import com.example.ECommerce_BackEnd.model.customerLogin;
+import com.example.ECommerce_BackEnd.model.product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,23 +34,39 @@ public class customerLoginController {
     }
 
 
-//    @GetMapping("/get24")
-//    public ResponseEntity<customerLogin> findByParam2(@RequestParam(value = "id_customerlogin") Integer customerId){
-//        return customerLoginService.findById(customerId);
-//    }
-
-    @GetMapping("/get25")
-    public String findByPara32(@RequestParam(value = "customer_username") String customerUsername,
+    //2. Current login
+    @GetMapping("/get/userAuthentication")
+    public String authenticateUserLogin(@RequestParam(value = "customer_username") String customerUsername,
                                @RequestParam(value = "customer_password") String customerPassword){
-        return customerLoginService.findById2(customerUsername,customerPassword);
+        return customerLoginService.authenticateUserLogin(customerUsername,customerPassword);
     }
 
 
+    //3. For Profile Management
+    @GetMapping("/get/FCPI")
+    public ResponseEntity<List<customerLogin>> findCustomerPersonalInformation(@RequestParam(value = "customer_username") String customerUsername){
+        return customerLoginService.findCustomerPersonalInformation(customerUsername);
+    }
+
+
+    //4. Register Customer
     @PostMapping("/post")
     public ResponseEntity<customerLogin> saveCustomerLogin(@RequestBody customerLogin customerLogin){
         return customerLoginService.saveCustomerLogin(customerLogin);
     }
 
+
+    //5. Update Customer
+    @PutMapping("/put")
+    public ResponseEntity<String> updateCustomerData(@RequestBody customerLogin customerLogin,@RequestParam(value = "customer_username") String customerUsername){
+        return customerLoginService.updateCustomerData(customerLogin,customerUsername);
+    }
+
+
+    @GetMapping("/getSoorya")
+    public String findBySoorya(@RequestParam(value = "customer_username") String customerUsername){
+        return customerLoginService.findBySoorya(customerUsername);
+    }
 
 
 }

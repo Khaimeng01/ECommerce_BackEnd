@@ -1,10 +1,8 @@
 package com.example.ECommerce_BackEnd.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.ECommerce_BackEnd.service.additonalServices.AesEncryptor;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -13,14 +11,19 @@ import lombok.Data;
 public class sellerLogin {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id_sellerlogin;
+
     @Column(name ="SELLER_USERNAME")
     private String seller_username;
 
     @Column(name ="SELLER_PASSWORD")
     private String seller_password;
 
+    @Convert(converter = AesEncryptor.class)
     @Column(name="SELLER_ACCOUNTDETAILS")
     private String seller_accountdetails;
+
 
     @Column(name="SELLER_EMAIL")
     private String seller_email;

@@ -5,7 +5,9 @@ import lombok.Data;
 @Data
 public class orderBuyerDetails {
 
-    private String order_Seller_Username;
-    private String order_deliveryAddress;
-    private String order_SellerContactNumber;
+    private String order_Buyer_Username;
+    private String order_Delivery_Address;
+    private String order_Buyer_ContactNumber;
 }
+
+

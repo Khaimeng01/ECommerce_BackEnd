@@ -1,20 +1,22 @@
 package com.example.ECommerce_BackEnd.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "order")
+@Table(name = "order_tb")
 public class orderDetails {
 
     @Id
-    @Column(name ="ID_ORDER")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_order;
+
+    @Column(name = "ORDER_DATE")
+    private Date order_date;
 
     @Column(name ="PRODUCT_ID")
     private int product_id;
@@ -43,5 +45,8 @@ public class orderDetails {
 
     @Column(name ="ORDER_STATUS")
     private String order_status;
+
+    @Column(name="ORDER_TRANSACTION_RECORD")
+    private String order_transaction_record;
 
 }

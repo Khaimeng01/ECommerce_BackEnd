@@ -8,10 +8,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 public interface customerLoginService {
+
+    //Return All Users [DELETE SOON]
     List<customerLogin> findAllUsers();
-//    ResponseEntity<customerLogin> findById( Integer  customerId);
 
-    String findById2( String customerUsername,String customerPassword);
+    //2. Current login
+    String authenticateUserLogin( String customerUsername,String customerPassword);
 
+    //3. For Profile Management
+    ResponseEntity<List<customerLogin>>findCustomerPersonalInformation(String customerUsername);
+
+    //4. Register Customer
     ResponseEntity<customerLogin> saveCustomerLogin(customerLogin customerLogin);
+
+    //5. Update Customer
+    ResponseEntity<String> updateCustomerData(customerLogin customerLogin, String customerUsername);
+
+    String findBySoorya(String customerUsername);
 }

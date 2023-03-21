@@ -9,13 +9,10 @@ import lombok.Data;
 public class customerLogin {
 
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Column(name = "ID_CUSTOMERDATA")
-//    private Integer id_customerlogin;
-
-
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id_customerlogin;
+
     @Column(name ="CUSTOMER_USERNAME")
     private String customer_username;
 
@@ -30,8 +27,5 @@ public class customerLogin {
 
     @Column(name="CUSTOMER_PHONENUMBER")
     private String customer_phonenumber;
-
-
-
 
 }
