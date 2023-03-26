@@ -13,7 +13,7 @@ public interface sellerLoginService {
     String authenticateSellerLogin( String customerUsername,String customerPassword);
 
     //2. Register Seller
-    ResponseEntity<sellerLogin> saveSellerLogin(sellerData2 sellerData2) throws Exception;
+    ResponseEntity<String> saveSellerLogin(sellerData2 sellerData2) throws Exception;
 
     //3. For Profile Management
     ResponseEntity<List<sellerLogin>> findSellerPersonalInformation(String sellerUsername) throws Exception;

@@ -29,7 +29,7 @@ public class sellerLoginController {
 
     //2. Register Seller
     @PostMapping("/post")
-    public ResponseEntity<sellerLogin> saveCustomerLogin(@RequestBody sellerData2 sellerData2) throws Exception {
+    public ResponseEntity<String> saveCustomerLogin(@RequestBody sellerData2 sellerData2) throws Exception {
         return sellerLoginService.saveSellerLogin(sellerData2);
     }
 

@@ -51,7 +51,7 @@ public class customerLoginController {
 
     //4. Register Customer
     @PostMapping("/post")
-    public ResponseEntity<customerLogin> saveCustomerLogin(@RequestBody customerLogin customerLogin){
+    public ResponseEntity<String> saveCustomerLogin(@RequestBody customerLogin customerLogin){
         return customerLoginService.saveCustomerLogin(customerLogin);
     }
 

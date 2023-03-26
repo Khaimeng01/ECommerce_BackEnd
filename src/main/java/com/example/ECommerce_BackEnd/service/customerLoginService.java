@@ -19,7 +19,7 @@ public interface customerLoginService {
     ResponseEntity<List<customerLogin>>findCustomerPersonalInformation(String customerUsername);
 
     //4. Register Customer
-    ResponseEntity<customerLogin> saveCustomerLogin(customerLogin customerLogin);
+    ResponseEntity<String> saveCustomerLogin(customerLogin customerLogin);
 
     //5. Update Customer
     ResponseEntity<String> updateCustomerData(customerLogin customerLogin, String customerUsername);

@@ -75,10 +75,32 @@ public class productController {
 //    public String findByLai(@RequestParam(value = "product_owner") String product_owner){
 //        return productService.findByLai(product_owner);
 //    }
+
+
+
     @DeleteMapping("/deleteProduct")
     public ResponseEntity<String> deleteProduct(@RequestParam(value = "id_product") Long productId){
         return productService.deleteProduct(productId);
     }
+
+        //    5.Edit Product Details
+
+    @PutMapping(value = {"/put"},consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<String> updateProductData(@RequestPart("product") product product,
+                                                    @RequestPart("imageFile")MultipartFile[]file,
+                                                    @RequestParam(value = "id_product") Long id_Product){
+
+        try{
+            Set<imageModel>imageModels= uploadImage(file);
+            product.setProductImages(imageModels);
+            return productService.updateProductData(product,id_Product);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+
 
 
 

@@ -2,10 +2,15 @@ package com.example.ECommerce_BackEnd.impl;
 
 import com.example.ECommerce_BackEnd.model.customerLogin;
 import com.example.ECommerce_BackEnd.model.product;
+import com.example.ECommerce_BackEnd.model.sellerLogin;
 import com.example.ECommerce_BackEnd.service.productService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +46,7 @@ public class productServiceImpl implements productService {
         return p.map(Collections::singletonList).orElse(Collections.emptyList());
     }
 
+//    5.Delete Product
     @Override
     public ResponseEntity<String> deleteProduct(Long productId) {
         this.productRepository.deleteById(productId);
@@ -57,5 +63,47 @@ public class productServiceImpl implements productService {
 //        p.ifPresent(productsOfSeller::add);
 //        return productsOfSeller.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(productsOfSeller);
     }
+
+    @Override
+    public ResponseEntity<String> updateProductData(product product, Long productId) {
+        Optional<com.example.ECommerce_BackEnd.model.product> existingProductList = this.productRepository.findById(productId);
+        product selectedProduct = existingProductList.get();
+        selectedProduct.setProduct_name(product.getProduct_name());
+        selectedProduct.setProduct_category(product.getProduct_category());
+        selectedProduct.setProduct_quantity(product.getProduct_quantity());
+        selectedProduct.setProduct_owner(product.getProduct_owner());
+        selectedProduct.setProduct_description(product.getProduct_description());
+        selectedProduct.setProductImages(product.getProductImages());
+        selectedProduct.setProduct_price(product.getProduct_price());
+        this.productRepository.save(selectedProduct);
+        String message = "Data save successfully";
+        return ResponseEntity.ok().body(message);
+    }
+
+//    sellerLogin existingSeller = this.sellerLoginRepository.findSellerInfo(sellerUsername);
+//    BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+//        existingSeller.setSeller_username(sellerLogin.getSeller_username());
+//        existingSeller.setSeller_address(sellerLogin.getSeller_address());
+//        existingSeller.setSeller_email(sellerLogin.getSeller_email());
+//        existingSeller.setSeller_phonenumber(sellerLogin.getSeller_phonenumber());
+//
+//        if(!sellerLogin.getSeller_password().equals(existingSeller.getSeller_password())){
+//        String encryptedPassword = bcrypt.encode(sellerLogin.getSeller_password());
+//        existingSeller.setSeller_accountdetails(encryptedPassword);
+//        if(!sellerLogin.getSeller_accountdetails().equals(existingSeller.getSeller_accountdetails())){
+//            existingSeller.setSeller_accountdetails(sellerLogin.getSeller_accountdetails());
+//        }
+//    }
+//
+//        this.sellerLoginRepository.save(existingSeller);
+//    String message = "Data save successfully";
+//        return ResponseEntity.ok().body(message);
+
+
+//    //    Edit Product Details
+//    @PutMapping("/put")
+//    public ResponseEntity<String> updateProductData(@RequestBody product product, @RequestParam(value = "id_Product") Long id_Product){
+//        return productService.updateProductData(product,id_Product);
+//    }
 
 }

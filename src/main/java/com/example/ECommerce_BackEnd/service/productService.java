@@ -1,6 +1,7 @@
 package com.example.ECommerce_BackEnd.service;
 
 import com.example.ECommerce_BackEnd.model.product;
+import com.example.ECommerce_BackEnd.model.sellerLogin;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,9 @@ public interface productService {
 
     //    4. Get Product for Specific Seller
     List<product> getProductFromSeller(String productOwner);
+
+
+    ResponseEntity<String> updateProductData(product product, Long productId);
 
 //    String findByLai(String product_owner);
 }

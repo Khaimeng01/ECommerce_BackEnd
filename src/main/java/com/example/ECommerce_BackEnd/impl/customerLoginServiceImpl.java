@@ -8,10 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.ECommerce_BackEnd.service.customerLoginService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -40,7 +37,7 @@ public class customerLoginServiceImpl implements customerLoginService {
             if(bcrypt.matches(customerPassword,customerLogin.getCustomer_password())){
                 return "Authenticated User";
             }else{
-                return "Incorect Password";
+                return "Incorrect Password";
             }
         }
         return "No user is found with this Username";
@@ -58,11 +55,28 @@ public class customerLoginServiceImpl implements customerLoginService {
 
     //4. Register Customer
     @Override
-    public ResponseEntity<customerLogin> saveCustomerLogin(customerLogin customerLogin) {
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String encryptedPassword = bcrypt.encode(customerLogin.getCustomer_password());
-        customerLogin.setCustomer_password(encryptedPassword);
-        return new ResponseEntity<customerLogin>(customerLoginRepository.save(customerLogin),HttpStatus.CREATED);
+    public ResponseEntity<String> saveCustomerLogin(customerLogin customerLogin) {
+        List<customerLogin> customerLoginList = customerLoginRepository.findAll();
+        Boolean status = false;
+        for(int i=0;i< customerLoginList.size();i++){
+           customerLogin customerFromList = customerLoginList.get(i);
+           if(Objects.equals(customerFromList.getCustomer_username(), customerLogin.getCustomer_username())){
+               status = true;
+           }
+        }
+        if(!status){
+            Optional<customerLogin> opUser = Optional.ofNullable(customerLoginRepository.authenticateUserLogin(customerLogin.getCustomer_username()));
+            if(opUser.isPresent()){
+                customerLogin customerLogin_2 = opUser.get();
+            }
+            BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+            String encryptedPassword = bcrypt.encode(customerLogin.getCustomer_password());
+            customerLogin.setCustomer_password(encryptedPassword);
+            customerLoginRepository.save(customerLogin);
+            return ResponseEntity.ok().body("Success");
+        }else{
+            return ResponseEntity.ok().body("Username has been used");
+        }
     }
 
 
