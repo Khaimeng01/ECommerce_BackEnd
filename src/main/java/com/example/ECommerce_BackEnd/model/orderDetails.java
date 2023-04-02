@@ -4,6 +4,7 @@ package com.example.ECommerce_BackEnd.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -25,7 +26,7 @@ public class orderDetails {
     private int order_productquantity;
 
     @Column(name ="ORDER_PRICEAMOUNT")
-    private int order_priceamount;
+    private BigDecimal order_priceamount;
 
     @Column(name ="ORDER_BUYER_USERNAME")
     private String order_buyer_username;

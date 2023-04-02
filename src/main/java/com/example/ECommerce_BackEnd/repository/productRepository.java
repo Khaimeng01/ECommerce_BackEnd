@@ -13,7 +13,10 @@ import java.util.List;
 @Repository
 public interface productRepository extends CrudRepository<product,Long> {
 
-    @Query(value = "SELECT * FROM `product` WHERE product_owner =:seller_username",nativeQuery = true)
+    @Query(value = "SELECT * FROM `product_tb` WHERE product_owner =:seller_username",nativeQuery = true)
     List<product> getProductFromSeller(@Param("seller_username")String seller_username);
+
+    @Query(value = "SELECT * FROM `product_tb` WHERE product_category =:product_category",nativeQuery = true)
+    List<product> getProductFromCategory(@Param("product_category") String product_category);
 
 }

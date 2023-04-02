@@ -76,15 +76,7 @@ public class productController {
 //        return productService.findByLai(product_owner);
 //    }
 
-
-
-    @DeleteMapping("/deleteProduct")
-    public ResponseEntity<String> deleteProduct(@RequestParam(value = "id_product") Long productId){
-        return productService.deleteProduct(productId);
-    }
-
-        //    5.Edit Product Details
-
+    //  5.Edit Product Details
     @PutMapping(value = {"/put"},consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> updateProductData(@RequestPart("product") product product,
                                                     @RequestPart("imageFile")MultipartFile[]file,
@@ -98,6 +90,19 @@ public class productController {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    //  6. Delete Product
+    @DeleteMapping("/deleteProduct")
+    public ResponseEntity<String> deleteProduct(@RequestParam(value = "id_product") Long productId){
+        return productService.deleteProduct(productId);
+    }
+
+    //  7. Find Product from Specific Category
+    @GetMapping("/filterProductData")
+    public List<product> getProductFromCategory(@RequestParam(value = "product_category",required = false) String product_category,
+                                                @RequestParam(value = "product_priceSortingType",required = false) String product_priceSortingType){
+        return productService.getProductFromCategory(product_category,product_priceSortingType);
     }
 
 

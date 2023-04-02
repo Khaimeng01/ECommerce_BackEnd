@@ -4,11 +4,12 @@ package com.example.ECommerce_BackEnd.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "product")
+@Table(name = "product_tb")
 public class product {
 
     @Id
@@ -18,7 +19,7 @@ public class product {
     private String product_name;
 
 
-    private int product_price;
+    private BigDecimal product_price;
 
     private String product_owner;
 
@@ -30,7 +31,7 @@ public class product {
     private String product_description;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinTable(name = "product_images",
+    @JoinTable(name = "product_images_tb",
             joinColumns = {
                 @JoinColumn(name = "id_product")
             },

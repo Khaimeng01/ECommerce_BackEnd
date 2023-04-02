@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface customerLoginRepository extends JpaRepository<customerLogin,String> {
 
-    @Query(value = "SELECT * FROM `customerdata` WHERE customer_username =:customer_username",nativeQuery = true)
+    @Query(value = "SELECT * FROM `customerdata_tb` WHERE customer_username =:customer_username",nativeQuery = true)
     customerLogin authenticateUserLogin(@Param("customer_username")String customer_username);
 
 

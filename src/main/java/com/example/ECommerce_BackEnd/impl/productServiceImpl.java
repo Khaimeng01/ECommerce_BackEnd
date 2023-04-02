@@ -8,14 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class productServiceImpl implements productService {
@@ -46,13 +45,7 @@ public class productServiceImpl implements productService {
         return p.map(Collections::singletonList).orElse(Collections.emptyList());
     }
 
-//    5.Delete Product
-    @Override
-    public ResponseEntity<String> deleteProduct(Long productId) {
-        this.productRepository.deleteById(productId);
-        String message = "Success";
-        return ResponseEntity.ok().body(message);
-    }
+
 
     //    4. Get Product for Specific Seller
     @Override
@@ -64,6 +57,7 @@ public class productServiceImpl implements productService {
 //        return productsOfSeller.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(productsOfSeller);
     }
 
+    //  5.Edit Product Details
     @Override
     public ResponseEntity<String> updateProductData(product product, Long productId) {
         Optional<com.example.ECommerce_BackEnd.model.product> existingProductList = this.productRepository.findById(productId);
@@ -79,6 +73,62 @@ public class productServiceImpl implements productService {
         String message = "Data save successfully";
         return ResponseEntity.ok().body(message);
     }
+
+    //  6. Delete Product
+    @Override
+    public ResponseEntity<String> deleteProduct(Long productId) {
+        this.productRepository.deleteById(productId);
+        String message = "Success";
+        return ResponseEntity.ok().body(message);
+    }
+
+    //  7. Find Product from Specific Category
+    @Override
+//    public List<product> getProductFromCategory(String product_category,String sortingType) {
+//        List<product> listOfProducts;
+//        if(StringUtils.isEmpty(product_category)){
+//            listOfProducts = productRepository.getProductFromCategory(product_category);
+//            if(StringUtils.isEmpty(sortingType)){
+//                if(sortingType.equals("ASCENDING")){
+//                    listOfProducts.sort(Comparator.comparing(product::getProduct_price));
+//                }else{
+//                    listOfProducts.sort(Comparator.comparing(product::getProduct_price).reversed());
+//                }
+//                return  listOfProducts;
+//            }else{
+//                return listOfProducts;
+//            }
+//        }else{
+//            listOfProducts= (List<product>) productRepository.findAll();
+//            if(Objects.equals(sortingType, "ASCENDING")){
+//                listOfProducts.sort(Comparator.comparing(product::getProduct_price));
+//            }else{
+//                listOfProducts.sort(Comparator.comparing(product::getProduct_price).reversed());
+//            }
+//            return listOfProducts;
+//        }
+//    }
+
+    public List<product> getProductFromCategory(String product_category, String product_priceSortingType) {
+        List<product> listOfProducts;
+        if (!StringUtils.isEmpty(product_category)) {
+            listOfProducts = productRepository.getProductFromCategory(product_category);
+        } else {
+            listOfProducts = (List<product>) productRepository.findAll();
+        }
+
+        if (!StringUtils.isEmpty(product_priceSortingType)) {
+            if (product_priceSortingType.equals("ASCENDING")) {
+                listOfProducts.sort(Comparator.comparing(product::getProduct_price));
+            } else {
+                listOfProducts.sort(Comparator.comparing(product::getProduct_price).reversed());
+            }
+        }
+
+        return listOfProducts;
+    }
+
+
 
 //    sellerLogin existingSeller = this.sellerLoginRepository.findSellerInfo(sellerUsername);
 //    BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();

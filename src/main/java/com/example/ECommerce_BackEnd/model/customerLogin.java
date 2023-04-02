@@ -5,12 +5,12 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "customerdata")
+@Table(name = "customerdata_tb")
 public class customerLogin {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_customerlogin;
 
     @Column(name ="CUSTOMER_USERNAME")

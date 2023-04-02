@@ -43,7 +43,7 @@ public class sellerLoginServiceImpl implements sellerLoginService {
             if(bcrypt.matches(sellerPassword,sellerLogin.getSeller_password())){
                 return "Authenticated User";
             }else{
-                return "Incorect Password";
+                return ("Incorect Password"+sellerLogin.getSeller_username());
             }
         }
     }
@@ -108,13 +108,11 @@ public class sellerLoginServiceImpl implements sellerLoginService {
         existingSeller.setSeller_address(sellerLogin.getSeller_address());
         existingSeller.setSeller_email(sellerLogin.getSeller_email());
         existingSeller.setSeller_phonenumber(sellerLogin.getSeller_phonenumber());
+        existingSeller.setSeller_accountdetails(sellerLogin.getSeller_accountdetails());
 
         if(!sellerLogin.getSeller_password().equals(existingSeller.getSeller_password())){
             String encryptedPassword = bcrypt.encode(sellerLogin.getSeller_password());
-            existingSeller.setSeller_accountdetails(encryptedPassword);
-            if(!sellerLogin.getSeller_accountdetails().equals(existingSeller.getSeller_accountdetails())){
-                existingSeller.setSeller_accountdetails(sellerLogin.getSeller_accountdetails());
-            }
+            existingSeller.setSeller_password(encryptedPassword);
         }
 
         this.sellerLoginRepository.save(existingSeller);

@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "sellerdata")
+@Table(name = "sellerdata_tb")
 public class sellerLogin {
 
     @Id

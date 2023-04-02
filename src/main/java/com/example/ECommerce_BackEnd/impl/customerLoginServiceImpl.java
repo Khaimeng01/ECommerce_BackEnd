@@ -39,8 +39,10 @@ public class customerLoginServiceImpl implements customerLoginService {
             }else{
                 return "Incorrect Password";
             }
+        }else{
+            return "No user is found with this Username";
         }
-        return "No user is found with this Username";
+
     }
 
     //3. For Profile Management
@@ -85,16 +87,20 @@ public class customerLoginServiceImpl implements customerLoginService {
     public ResponseEntity<String> updateCustomerData(customerLogin customerLogin, String customer_username) {
         customerLogin existingCustomerLogin = this.customerLoginRepository.findById(customer_username).orElseThrow
                 (()-> new RuntimeException());
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        existingCustomerLogin.setCustomer_username(customerLogin.getCustomer_username());
+          BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+          existingCustomerLogin.setCustomer_username(customerLogin.getCustomer_username());
           existingCustomerLogin.setCustomer_address(customerLogin.getCustomer_address());
           existingCustomerLogin.setCustomer_email(customerLogin.getCustomer_email());
           existingCustomerLogin.setCustomer_phonenumber(customerLogin.getCustomer_phonenumber());
-          existingCustomerLogin.setCustomer_password(bcrypt.encode(customerLogin.getCustomer_password()));
+          if(!customerLogin.getCustomer_password().equals(existingCustomerLogin.getCustomer_password())){
+              existingCustomerLogin.setCustomer_password(bcrypt.encode(customerLogin.getCustomer_password()));
+
+          }
+
           this.customerLoginRepository.save(existingCustomerLogin);
-          String message =customerLogin.getCustomer_username();
-//        customerLogin.getCustomer_username()
-          return ResponseEntity.ok().body(message);
+          String message = "Data save successfully";
+
+        return ResponseEntity.ok().body(message);
     }
 
     @Override
