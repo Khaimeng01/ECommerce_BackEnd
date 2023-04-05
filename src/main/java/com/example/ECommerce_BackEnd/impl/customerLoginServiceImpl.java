@@ -85,8 +85,7 @@ public class customerLoginServiceImpl implements customerLoginService {
     //5. Update Customer
     @Override
     public ResponseEntity<String> updateCustomerData(customerLogin customerLogin, String customer_username) {
-        customerLogin existingCustomerLogin = this.customerLoginRepository.findById(customer_username).orElseThrow
-                (()-> new RuntimeException());
+        customerLogin existingCustomerLogin = this.customerLoginRepository.authenticateUserLogin(customer_username);
           BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
           existingCustomerLogin.setCustomer_username(customerLogin.getCustomer_username());
           existingCustomerLogin.setCustomer_address(customerLogin.getCustomer_address());
