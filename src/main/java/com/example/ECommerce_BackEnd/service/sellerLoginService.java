@@ -9,15 +9,19 @@ import java.util.List;
 
 public interface sellerLoginService {
 
-    //1. Current login
+
     String authenticateSellerLogin( String customerUsername,String customerPassword);
 
-    //2. Register Seller
+
     ResponseEntity<String> saveSellerLogin(sellerData2 sellerData2) throws Exception;
 
-    //3. For Profile Management
+
     ResponseEntity<List<sellerLogin>> findSellerPersonalInformation(String sellerUsername) throws Exception;
 
-    //4. Update Seller Data [Profile Management]
+
     ResponseEntity<String> updateSellerData(sellerLogin sellerLogin, String sellerUsername);
+
+    ResponseEntity<String> findIfAccountExists(String sellerUsername);
+
+    ResponseEntity<String> updateSellerPassword(String sellerUsername, String sellerPassword);
 }

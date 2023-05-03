@@ -20,29 +20,41 @@ public class sellerLoginController {
         this.sellerLoginService = sellerLoginService;
     }
 
-    //1. Current login
+
     @GetMapping("/get")
     public String authenticateSellerLogin(@RequestParam(value = "seller_username") String sellerUsername,
                                @RequestParam(value = "seller_password") String sellerPassword){
         return sellerLoginService.authenticateSellerLogin(sellerUsername,sellerPassword);
     }
 
-    //2. Register Seller
+
     @PostMapping("/post")
     public ResponseEntity<String> saveCustomerLogin(@RequestBody sellerData2 sellerData2) throws Exception {
         return sellerLoginService.saveSellerLogin(sellerData2);
     }
 
-    //3. For Profile Management
+
     @GetMapping("/get/FSPI")
     public ResponseEntity<List<sellerLogin>> findSellerPersonalInformation(@RequestParam(value = "seller_username") String sellerUsername) throws Exception {
         return sellerLoginService.findSellerPersonalInformation(sellerUsername);
     }
 
-    //5. Update Seller Data [Profile Management]
+
     @PutMapping("/put")
     public ResponseEntity<String> updateSellerData(@RequestBody sellerLogin sellerLogin, @RequestParam(value = "seller_username") String sellerUsername){
         return sellerLoginService.updateSellerData(sellerLogin,sellerUsername);
+    }
+
+    @GetMapping("/findIfAccountExists")
+    public ResponseEntity<String> findIfAccountExists(@RequestParam(value = "seller_username") String sellerUsername){
+        return sellerLoginService.findIfAccountExists(sellerUsername);
+    }
+
+    @GetMapping("/updatePassword")
+    public ResponseEntity<String> updateSellerPassword(@RequestParam(value = "seller_username") String sellerUsername,
+                                                         @RequestParam(value = "seller_password") String sellerPassword){
+        return sellerLoginService.updateSellerPassword(sellerUsername,sellerPassword);
+
     }
 
 

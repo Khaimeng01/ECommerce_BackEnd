@@ -27,7 +27,7 @@ public class customerLoginServiceImpl implements customerLoginService {
     }
 
 
-    //2. Current login
+
     @Override
     public String authenticateUserLogin(String customerUsername,String customerPassword) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
@@ -45,7 +45,7 @@ public class customerLoginServiceImpl implements customerLoginService {
 
     }
 
-    //3. For Profile Management
+
     @Override
     public ResponseEntity<List<customerLogin>> findCustomerPersonalInformation(String customerUsername) {
         List<customerLogin> currentUserInformationList = new ArrayList<>();
@@ -55,18 +55,22 @@ public class customerLoginServiceImpl implements customerLoginService {
     }
 
 
-    //4. Register Customer
+
     @Override
     public ResponseEntity<String> saveCustomerLogin(customerLogin customerLogin) {
         List<customerLogin> customerLoginList = customerLoginRepository.findAll();
-        Boolean status = false;
+        int status = 0;
+        String bodyMessage = null;
         for(int i=0;i< customerLoginList.size();i++){
            customerLogin customerFromList = customerLoginList.get(i);
            if(Objects.equals(customerFromList.getCustomer_username(), customerLogin.getCustomer_username())){
-               status = true;
+               status = 1;
+           } else if (Objects.equals(customerFromList.getCustomer_email(), customerLogin.getCustomer_email())) {
+               status = 2;
            }
+
         }
-        if(!status){
+        if(status ==0){
             Optional<customerLogin> opUser = Optional.ofNullable(customerLoginRepository.authenticateUserLogin(customerLogin.getCustomer_username()));
             if(opUser.isPresent()){
                 customerLogin customerLogin_2 = opUser.get();
@@ -77,12 +81,16 @@ public class customerLoginServiceImpl implements customerLoginService {
             customerLoginRepository.save(customerLogin);
             return ResponseEntity.ok().body("Success");
         }else{
-            return ResponseEntity.ok().body("Username has been used");
+            if(status ==1){
+                bodyMessage = "Username has been used";
+            } else if (status ==2) {
+                bodyMessage = "Email has been used";
+            }
+            return ResponseEntity.ok().body(bodyMessage);
         }
     }
 
 
-    //5. Update Customer
     @Override
     public ResponseEntity<String> updateCustomerData(customerLogin customerLogin, String customer_username) {
         customerLogin existingCustomerLogin = this.customerLoginRepository.authenticateUserLogin(customer_username);
@@ -103,20 +111,27 @@ public class customerLoginServiceImpl implements customerLoginService {
     }
 
     @Override
-    public String findBySoorya(String customerUsername) {
+    public ResponseEntity<String> findIfAccountExists(String customerUsername) {
+        String message = "";
+        try{
+            customerLogin customerLogin = customerLoginRepository.authenticateUserLogin(customerUsername);
+            if(customerLogin!=null){
+                message = "Account Does Exits";
+            }
+        }catch (Exception e){
+            message = "Account Does Not Exits";
+        }
+        return ResponseEntity.ok().body(message);
+    }
+
+    @Override
+    public ResponseEntity<String> updateCustomerPassword(String customerUsername, String customerPassword) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         customerLogin customerLogin = customerLoginRepository.authenticateUserLogin(customerUsername);
-        String message = customerLogin.getCustomer_username();
-//        Optional<customerLogin> opUser = Optional.ofNullable(customerLoginRepository.findByCustomer(customerUsername));
-//        if(opUser.isPresent()){
-//            customerLogin customerLogin = opUser.get();
-//            if(bcrypt.matches(customerPassword,customerLogin.getCustomer_password())){
-//                return "Authenticated User";
-//            }else{
-//                return "Incorect Password";
-//            }
-//        }
-        return message;
+        customerLogin.setCustomer_password(bcrypt.encode(customerPassword));
+        this.customerLoginRepository.save(customerLogin);
+        String message = "Data save successfully";
+        return ResponseEntity.ok().body(message);
     }
 
 

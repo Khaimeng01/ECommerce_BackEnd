@@ -9,20 +9,22 @@ import java.util.List;
 
 public interface customerLoginService {
 
-    //Return All Users [DELETE SOON]
+
     List<customerLogin> findAllUsers();
 
-    //2. Current login
+
     String authenticateUserLogin( String customerUsername,String customerPassword);
 
-    //3. For Profile Management
+
     ResponseEntity<List<customerLogin>>findCustomerPersonalInformation(String customerUsername);
 
-    //4. Register Customer
+
     ResponseEntity<String> saveCustomerLogin(customerLogin customerLogin);
 
-    //5. Update Customer
+
     ResponseEntity<String> updateCustomerData(customerLogin customerLogin, String customerUsername);
 
-    String findBySoorya(String customerUsername);
+    ResponseEntity<String> findIfAccountExists(String customerUsername);
+
+    ResponseEntity<String> updateCustomerPassword(String customerUsername, String customerPassword);
 }

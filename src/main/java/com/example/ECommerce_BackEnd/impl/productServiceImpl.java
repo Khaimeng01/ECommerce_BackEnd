@@ -26,19 +26,19 @@ public class productServiceImpl implements productService {
         this.productRepository = productRepository;
     }
 
-    //    1.Register New Product
+
     @Override
     public product addNewProduct(product product) {
         return productRepository.save(product);
     }
 
-    //    2.Get All Products
+
     @Override
     public List<product> getAllProducts() {
         return (List<product>) productRepository.findAll();
     }
 
-    //    3.Get Specific Product
+
     @Override
     public List<product> getProduct(long productId) {
         Optional<product> p = productRepository.findById(productId);
@@ -46,18 +46,13 @@ public class productServiceImpl implements productService {
     }
 
 
-
-    //    4. Get Product for Specific Seller
     @Override
     public List<product> getProductFromSeller(String productOwner) {
         List<product> productsOfSeller = productRepository.getProductFromSeller(productOwner);
         return productsOfSeller;
-//        Optional<product> p = (Optional<product>) Optional.ofNullable(productRepository.getProductFromSeller(productOwner));
-//        p.ifPresent(productsOfSeller::add);
-//        return productsOfSeller.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(productsOfSeller);
     }
 
-    //  5.Edit Product Details
+
     @Override
     public ResponseEntity<String> updateProductData(product product, Long productId) {
         Optional<com.example.ECommerce_BackEnd.model.product> existingProductList = this.productRepository.findById(productId);
@@ -74,7 +69,7 @@ public class productServiceImpl implements productService {
         return ResponseEntity.ok().body(message);
     }
 
-    //  6. Delete Product
+
     @Override
     public ResponseEntity<String> deleteProduct(Long productId) {
         this.productRepository.deleteById(productId);
@@ -82,32 +77,8 @@ public class productServiceImpl implements productService {
         return ResponseEntity.ok().body(message);
     }
 
-    //  7. Find Product from Specific Category
+
     @Override
-//    public List<product> getProductFromCategory(String product_category,String sortingType) {
-//        List<product> listOfProducts;
-//        if(StringUtils.isEmpty(product_category)){
-//            listOfProducts = productRepository.getProductFromCategory(product_category);
-//            if(StringUtils.isEmpty(sortingType)){
-//                if(sortingType.equals("ASCENDING")){
-//                    listOfProducts.sort(Comparator.comparing(product::getProduct_price));
-//                }else{
-//                    listOfProducts.sort(Comparator.comparing(product::getProduct_price).reversed());
-//                }
-//                return  listOfProducts;
-//            }else{
-//                return listOfProducts;
-//            }
-//        }else{
-//            listOfProducts= (List<product>) productRepository.findAll();
-//            if(Objects.equals(sortingType, "ASCENDING")){
-//                listOfProducts.sort(Comparator.comparing(product::getProduct_price));
-//            }else{
-//                listOfProducts.sort(Comparator.comparing(product::getProduct_price).reversed());
-//            }
-//            return listOfProducts;
-//        }
-//    }
 
     public List<product> getProductFromCategory(String product_category, String product_priceSortingType) {
         List<product> listOfProducts;
@@ -128,32 +99,5 @@ public class productServiceImpl implements productService {
         return listOfProducts;
     }
 
-
-
-//    sellerLogin existingSeller = this.sellerLoginRepository.findSellerInfo(sellerUsername);
-//    BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-//        existingSeller.setSeller_username(sellerLogin.getSeller_username());
-//        existingSeller.setSeller_address(sellerLogin.getSeller_address());
-//        existingSeller.setSeller_email(sellerLogin.getSeller_email());
-//        existingSeller.setSeller_phonenumber(sellerLogin.getSeller_phonenumber());
-//
-//        if(!sellerLogin.getSeller_password().equals(existingSeller.getSeller_password())){
-//        String encryptedPassword = bcrypt.encode(sellerLogin.getSeller_password());
-//        existingSeller.setSeller_accountdetails(encryptedPassword);
-//        if(!sellerLogin.getSeller_accountdetails().equals(existingSeller.getSeller_accountdetails())){
-//            existingSeller.setSeller_accountdetails(sellerLogin.getSeller_accountdetails());
-//        }
-//    }
-//
-//        this.sellerLoginRepository.save(existingSeller);
-//    String message = "Data save successfully";
-//        return ResponseEntity.ok().body(message);
-
-
-//    //    Edit Product Details
-//    @PutMapping("/put")
-//    public ResponseEntity<String> updateProductData(@RequestBody product product, @RequestParam(value = "id_Product") Long id_Product){
-//        return productService.updateProductData(product,id_Product);
-//    }
 
 }

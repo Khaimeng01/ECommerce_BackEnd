@@ -26,7 +26,7 @@ public class productController {
         this.productService = productService;
     }
 
-//    1.Register New Product
+
     @PostMapping(value = {"/addNewProduct"},consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public product addNewProduct(@RequestPart("product") product product,
                                  @RequestPart("imageFile")MultipartFile[]file){
@@ -36,7 +36,7 @@ public class productController {
             product.setProductImages(imageModels);
             return productService.addNewProduct(product);
         }catch (Exception e){
-            System.out.println(e.getMessage());
+
             return null;
         }
     }
@@ -54,29 +54,25 @@ public class productController {
         return imageModel;
     }
 
-//    2.Get All Products
+
     @GetMapping({"/getAllProducts"})
     public List<product> getAllProducts(){
         return productService.getAllProducts();
     }
 
-//    3.Get Specific Product
+
     @GetMapping("/getProduct")
     public List<product> getProduct(@RequestParam(value = "id_product") Long productId){
         return productService.getProduct(productId);
     }
 
-//    4. Get Product for Specific Seller
+
     @GetMapping("/getProduct/FS")
     public List<product> getProductFromSeller(@RequestParam(value="product_owner") String productOwner){
         return  productService.getProductFromSeller(productOwner);
     }
-//    @GetMapping("/getLai")
-//    public String findByLai(@RequestParam(value = "product_owner") String product_owner){
-//        return productService.findByLai(product_owner);
-//    }
 
-    //  5.Edit Product Details
+
     @PutMapping(value = {"/put"},consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> updateProductData(@RequestPart("product") product product,
                                                     @RequestPart("imageFile")MultipartFile[]file,
@@ -87,18 +83,17 @@ public class productController {
             product.setProductImages(imageModels);
             return productService.updateProductData(product,id_Product);
         }catch (Exception e){
-            System.out.println(e.getMessage());
             return null;
         }
     }
 
-    //  6. Delete Product
+
     @DeleteMapping("/deleteProduct")
     public ResponseEntity<String> deleteProduct(@RequestParam(value = "id_product") Long productId){
         return productService.deleteProduct(productId);
     }
 
-    //  7. Find Product from Specific Category
+
     @GetMapping("/filterProductData")
     public List<product> getProductFromCategory(@RequestParam(value = "product_category",required = false) String product_category,
                                                 @RequestParam(value = "product_priceSortingType",required = false) String product_priceSortingType){

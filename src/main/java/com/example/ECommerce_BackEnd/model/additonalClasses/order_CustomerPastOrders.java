@@ -10,6 +10,7 @@ public class order_CustomerPastOrders {
     private int id_order;
     private Date order_date;
     private int product_id;
+    private String product_name;
     private BigDecimal order_priceamount;
     private String order_seller_username;
     private String order_description;

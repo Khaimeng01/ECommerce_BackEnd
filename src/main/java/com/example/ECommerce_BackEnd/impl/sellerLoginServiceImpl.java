@@ -21,17 +21,12 @@ public class sellerLoginServiceImpl implements sellerLoginService {
     private com.example.ECommerce_BackEnd.repository.sellerLoginRepository sellerLoginRepository;
     private encryptionService encryptionService;
 
-//    public sellerLoginServiceImpl(com.example.ECommerce_BackEnd.repository.sellerLoginRepository sellerLoginRepository) {
-//        this.sellerLoginRepository = sellerLoginRepository;
-//    }
-
 
     public sellerLoginServiceImpl(com.example.ECommerce_BackEnd.repository.sellerLoginRepository sellerLoginRepository, com.example.ECommerce_BackEnd.service.additonalServices.encryptionService encryptionService) {
         this.sellerLoginRepository = sellerLoginRepository;
         this.encryptionService = encryptionService;
     }
 
-    //1. Current login
     @Override
     public String authenticateSellerLogin(String sellerUsername, String sellerPassword) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
@@ -48,27 +43,27 @@ public class sellerLoginServiceImpl implements sellerLoginService {
         }
     }
 
-    //2. Register Seller
+
     @Override
     public ResponseEntity<String> saveSellerLogin(sellerData2 sellerData2) throws Exception {
 
         List<sellerLogin> sellerLoginList = sellerLoginRepository.findAll();
-        Boolean status = false;
+        int status = 0;
+        String bodyMessage = null;
         for(int i=0;i< sellerLoginList.size();i++){
             sellerLogin sellerLoginFromList = sellerLoginList.get(i);
             if(Objects.equals(sellerLoginFromList.getSeller_username(), sellerData2.getSeller_username())){
-                status = true;
+                status = 1;
+            } else if (Objects.equals(sellerLoginFromList.getSeller_email(), sellerData2.getSeller_email())) {
+                status = 2;
             }
         }
 
-        if(!status){
-            //Encrypt Password
+        if(status==0){
+
             BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
             String encryptedPassword = bcrypt.encode(sellerData2.getSeller_password());
             sellerData2.setSeller_password(encryptedPassword);
-
-            //Encrypt Wallet Address
-            byte[] encryptedBytes = encryptionService.encrypt(sellerData2.getSeller_accountdetails());
             sellerLogin sellerLoginLoginData = new sellerLogin();
             sellerLoginLoginData.setSeller_username(sellerData2.getSeller_username());
             sellerLoginLoginData.setSeller_password(sellerData2.getSeller_password());
@@ -83,12 +78,17 @@ public class sellerLoginServiceImpl implements sellerLoginService {
             return ResponseEntity.ok().body("Success");
 
         }else{
-            return ResponseEntity.ok().body("Username has been used");
+            if(status ==1){
+                bodyMessage = "Username has been used";
+            } else if (status ==2) {
+                bodyMessage = "Email has been used";
+            }
+            return ResponseEntity.ok().body(bodyMessage);
         }
 
     }
 
-    //3. For Profile Management
+
     @Override
     public ResponseEntity<List<sellerLogin>> findSellerPersonalInformation(String sellerUsername) throws Exception {
 
@@ -99,7 +99,7 @@ public class sellerLoginServiceImpl implements sellerLoginService {
 
     }
 
-    //4. Update Seller Data [Profile Management]
+
     @Override
     public ResponseEntity<String> updateSellerData(sellerLogin sellerLogin, String sellerUsername) {
         sellerLogin existingSeller = this.sellerLoginRepository.findSellerInfo(sellerUsername);
@@ -120,8 +120,29 @@ public class sellerLoginServiceImpl implements sellerLoginService {
         return ResponseEntity.ok().body(message);
     }
 
+    @Override
+    public ResponseEntity<String> findIfAccountExists(String sellerUsername) {
+        String message = "";
+        try{
+            sellerLogin sellerLogin = sellerLoginRepository.findSellerInfo(sellerUsername);
+            if(sellerLogin!=null){
+                message = "Account Does Exits";
+            }
+        }catch (Exception e){
+            message = "Account Does Not Exits";
+        }
+        return ResponseEntity.ok().body(message);
+    }
 
-
+    @Override
+    public ResponseEntity<String> updateSellerPassword(String sellerUsername, String sellerPassword) {
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        sellerLogin sellerLogin = sellerLoginRepository.findSellerInfo(sellerUsername);
+        sellerLogin.setSeller_password(bcrypt.encode(sellerPassword));
+        this.sellerLoginRepository.save(sellerLogin);
+        String message = "Data save successfully";
+        return ResponseEntity.ok().body(message);
+    }
 
 
 }

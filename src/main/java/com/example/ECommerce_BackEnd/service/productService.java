@@ -12,29 +12,26 @@ import java.util.Optional;
 @Service
 public interface productService {
 
-    //    1.Register New Product
+
     public product addNewProduct(product product);
 
-    //    2.Get All Products
+
     List<product> getAllProducts();
 
-    //    3.Get Specific Product
+
     List<product> getProduct(long productId);
 
 
-    //    4. Get Product for Specific Seller
     List<product> getProductFromSeller(String productOwner);
 
 
-    //  5.Edit Product Details
     ResponseEntity<String> updateProductData(product product, Long productId);
 
 
-    //  6. Delete Product
     ResponseEntity<String> deleteProduct(Long productId);
 
-    //  7. Find Product from Specific Category
+
     List<product> getProductFromCategory(String product_category,String product_priceSortingType);
 
-//    String findByLai(String product_owner);
+
 }

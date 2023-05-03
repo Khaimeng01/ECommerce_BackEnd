@@ -29,18 +29,7 @@ public class orderServiceImpl implements orderService {
 
     private com.example.ECommerce_BackEnd.repository.productRepository productRepository;
 
-//    public orderServiceImpl(com.example.ECommerce_BackEnd.repository.orderRepository orderRepository,
-//                            com.example.ECommerce_BackEnd.repository.customerLoginRepository customerLoginRepository) {
-//        this.orderRepository = orderRepository;
-//        this.customerLoginRepository = customerLoginRepository;
-//    }
 
-
-//    public orderServiceImpl(com.example.ECommerce_BackEnd.repository.orderRepository orderRepository, com.example.ECommerce_BackEnd.repository.customerLoginRepository customerLoginRepository, com.example.ECommerce_BackEnd.repository.sellerLoginRepository sellerLoginRepository) {
-//        this.orderRepository = orderRepository;
-//        this.customerLoginRepository = customerLoginRepository;
-//        this.sellerLoginRepository = sellerLoginRepository;
-//    }
 
 
     public orderServiceImpl(com.example.ECommerce_BackEnd.repository.orderRepository orderRepository, com.example.ECommerce_BackEnd.repository.customerLoginRepository customerLoginRepository, com.example.ECommerce_BackEnd.repository.sellerLoginRepository sellerLoginRepository, com.example.ECommerce_BackEnd.repository.productRepository productRepository) {
@@ -50,7 +39,7 @@ public class orderServiceImpl implements orderService {
         this.productRepository = productRepository;
     }
 
-    //1. Get customerData in CheckOutPage
+
     @Override
     public orderBuyerDetails findBuyerOrderDetails(String customer_username) {
         Optional<customerLogin> customerLogin = Optional.ofNullable(this.customerLoginRepository.authenticateUserLogin(customer_username));
@@ -70,7 +59,6 @@ public class orderServiceImpl implements orderService {
         return  sellerAddress;
     }
 
-    //    3. Save Order
     @Override
     public ResponseEntity<orderDetails> saveOrder(orderDetails orderDetails) {
         Optional<product> selectedProductList = productRepository.findById(Long.valueOf(orderDetails.getProduct_id()));
@@ -81,22 +69,6 @@ public class orderServiceImpl implements orderService {
     }
 
     @Override
-//    public ResponseEntity<List<order_CustomerPastOrders>> findBuyerOrderDetails2(String customerUsername) {
-//        List<orderDetails> customerLogin =  this.orderRepository.findByCustomer(customerUsername);
-//        orderDetails orderDetails = customerLogin.get(0);
-//
-//        order_CustomerPastOrders order_customerPastOrders = new order_CustomerPastOrders();
-//        order_customerPastOrders.setId_order(orderDetails.getId_order());
-//        order_customerPastOrders.setOrder_date(orderDetails.getOrder_date());
-//        order_customerPastOrders.setProduct_id(orderDetails.getProduct_id());
-//        order_customerPastOrders.setOrder_priceamount(orderDetails.getOrder_priceamount());
-//        order_customerPastOrders.setOrder_seller_username(orderDetails.getOrder_seller_username());
-//        order_customerPastOrders.setOrder_description(orderDetails.getOrder_description());
-//        order_customerPastOrders.setOrder_status(orderDetails.getOrder_status());
-//
-//        List<orderDetails> customerPastOrderList = new ArrayList<>();
-//        return order_customerPastOrders;
-//    }
     public ResponseEntity<List<order_CustomerPastOrders>> findBuyerOrderDetails2(String customerUsername) {
         List<orderDetails> customerLogin = this.orderRepository.findByCustomer(customerUsername);
         List<order_CustomerPastOrders> customerPastOrderList = new ArrayList<>();
@@ -111,13 +83,16 @@ public class orderServiceImpl implements orderService {
             order_customerPastOrders.setOrder_description(orderDetails.getOrder_description());
             order_customerPastOrders.setOrder_status(orderDetails.getOrder_status());
             order_customerPastOrders.setOrder_transaction_record(orderDetails.getOrder_transaction_record());
+            Optional<product> selectedProduct = productRepository.findById((long) orderDetails.getProduct_id());
+            selectedProduct.ifPresent(product -> {
+                order_customerPastOrders.setProduct_name(product.getProduct_name());
+            });
             customerPastOrderList.add(order_customerPastOrders);
         }
 
         return ResponseEntity.ok(customerPastOrderList);
     }
 
-    //   5. Get Seller Past Order History [Seller]
     @Override
     public ResponseEntity<List<order_SellerOrders>> findSellerOrderDetails(String sellerUsername) {
         List<orderDetails>  sellerSelected = this.orderRepository.findBySeller(sellerUsername);

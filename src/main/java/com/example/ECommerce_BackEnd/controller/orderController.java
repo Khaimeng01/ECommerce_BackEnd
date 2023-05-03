@@ -26,7 +26,7 @@ public class orderController {
         this.orderService = orderService;
     }
 
-    //1. Get customerData in CheckOutPage
+
     @GetMapping("/getBuyer")
     public orderBuyerDetails findBuyerOrderDetails(@RequestParam(value = "customer_username") String customerUsername){
         return orderService.findBuyerOrderDetails(customerUsername);
@@ -37,19 +37,18 @@ public class orderController {
         return orderService.findBuyerOrderDetails(customerUsername);
     }
 
-//    3. Save Order
+
     @PostMapping("/post")
     public ResponseEntity<orderDetails> saveOrder(@RequestBody orderDetails orderDetails){
         return orderService.saveOrder(orderDetails);
     }
 
-//   4. Get Customer Past order HHistory [Buyer]
+
     @GetMapping("/get/orderCustomerPastOrders")
     public ResponseEntity<List<order_CustomerPastOrders>> findBuyerOrderDetails2(@RequestParam(value = "customer_username") String customerUsername){
         return orderService.findBuyerOrderDetails2(customerUsername);
     }
 
-//   5. Get Seller Past Order History [Seller]
     @GetMapping("/get/orderSellerOrders")
     public ResponseEntity<List<order_SellerOrders>> findSellerOrderDetails(@RequestParam(value = "seller_username")String sellerUsername){
         return orderService.findSellerOrderDetails(sellerUsername);
