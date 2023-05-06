@@ -1,3 +1,8 @@
+// Programmer Name 	: Mr. Lai Khai Meng , TP055753 , APU3F2209CS
+// Program Name   	: E_Commerce_Back_End
+// Description     	: To allow system to perform customerService with database using repository
+
+
 package com.example.ECommerce_BackEnd.impl;
 
 import com.example.ECommerce_BackEnd.model.customerLogin;

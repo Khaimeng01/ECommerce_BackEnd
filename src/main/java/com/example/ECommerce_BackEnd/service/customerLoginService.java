@@ -1,3 +1,8 @@
+// Programmer Name 	: Mr. Lai Khai Meng , TP055753 , APU3F2209CS
+// Program Name   	: E_Commerce_Back_End
+// Description     	: List of customerLoginService data functions and name which are linked to the customerLoginServiceImpl
+
+
 package com.example.ECommerce_BackEnd.service;
 
 import com.example.ECommerce_BackEnd.model.customerLogin;

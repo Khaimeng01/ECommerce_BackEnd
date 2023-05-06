@@ -1,3 +1,8 @@
+// Programmer Name 	: Mr. Lai Khai Meng , TP055753 , APU3F2209CS
+// Program Name   	: E_Commerce_Back_End
+// Description     	: Input specific SQL Query to obtain information from the set database in product
+
+
 package com.example.ECommerce_BackEnd.repository;
 
 import com.example.ECommerce_BackEnd.model.product;
