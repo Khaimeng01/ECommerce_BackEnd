@@ -26,9 +26,16 @@ public class customerLoginController {
         this.customerLoginRepository = customerLoginRepository;
     }
 
+
+
     @GetMapping("/get")
     public List<customerLogin> findAllUsers(){
         return customerLoginService.findAllUsers();
+    }
+
+    @GetMapping("/test")
+    public String tester(){
+        return "Test_1";
     }
 
 
